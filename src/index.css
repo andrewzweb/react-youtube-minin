@@ -13,9 +13,19 @@ code {
 }
 
 .wrapper{
-	padding: 5rem;
+	padding: 1rem;
 	margin: auto;
- 	width: 600px;
+ 	max-width: 600px;
 }
 
 
+.rm {
+	background: red;
+	border-radius: 50%;
+	color: #fff;
+	border: none;
+}
+
+.done{
+	text-decoration: line-through;
+}
