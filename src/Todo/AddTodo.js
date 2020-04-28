@@ -4,15 +4,16 @@ import PropTypes from 'prop-types'
 const styles = {
   form: {
 	padding: '1rem 0rem',
-	minWidth: '100%'
+	width: '100%',
+	margin: 'auto',
   },
   input: {
-	width: 'calc(100%-2rem)',
-	padding: '1rem',
+	padding: '0.5rem',
+	width: 'calc(100% - 1rem - 100px - 1rem)'
   },
   button: {
-	width: 'calc(100%-2rem)',
-	padding: '1rem',
+	width: '100px',
+	padding: '0.5rem',
   }
 }
 
