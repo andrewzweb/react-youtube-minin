@@ -9,7 +9,7 @@ const styles = {
   },
   input: {
 	padding: '0.5rem',
-	width: 'calc(100% - 1rem - 100px - 1rem)'
+	width: 'calc(100% - 1rem - 100px - 0.5rem)'
   },
   button: {
 	width: '100px',
