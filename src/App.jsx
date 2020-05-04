@@ -4,8 +4,8 @@ import Context from './context'
 import Loader from './Loader'
 import Modal from './Modal/Modal'
 import Axios from 'axios'
- 
-//const AddTodo = React.lazy(()=> import('./Todo/AddTodo'))
+import { connect } from 'react-redux'
+import {startLoading, stopLoading} from './state/ducks/loader/actions'
 
 const AddTodo = React.lazy(()=> new Promise(resolve => {
   setTimeout(() => {
@@ -13,16 +13,15 @@ const AddTodo = React.lazy(()=> new Promise(resolve => {
   }, 3000)
 }))
 
-const App = () =>  {
+const App = ({isLoad, startLoading, stopLoading}) =>  {
   const [todos, setTodos] = useState([])
-  const [loading, setLoading] = useState(true)
+//   const [loading, setLoading] = useState(true) // put outside in redux
 
   useEffect(() => {
-	  setTimeout(() => {
-		Axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5').then(res=> setTodos(res.data))	
-		setLoading(false)
-	},1000);
-	}, [])
+		startLoading();
+		Axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5').then(res=> setTodos(res.data))
+		stopLoading();
+	}, [startLoading, stopLoading])
 
   const toggleTodo = (id)=>{
 	setTodos(
@@ -40,6 +39,7 @@ const App = () =>  {
   }
 
   const addTodo = (title)=>{
+
 	setTodos(todos.concat([{
 	  title: title,
 	  id: Date.now(),
@@ -54,11 +54,11 @@ const App = () =>  {
 		<h1>React Todo's</h1>	
 		<React.Suspense fallback={<Loader/>}><AddTodo onCreate={addTodo}/></React.Suspense>
 		<Modal/>
-		{ loading && <Loader/>}
-		{ todos.length ? (
+		{ isLoad && <Loader/>}
+		{ !isLoad && todos.length ? (
 		  <TodoList todos={todos} onToggle={toggleTodo}/>
 		) : (
-		  loading ? null : <p>Not have yet TODO</p>
+			isLoad ? null : <p>Not have yet TODO</p>
 		)}
 			
 	  </div>
@@ -68,5 +68,8 @@ const App = () =>  {
   )
 }
 
-export default App
+const mapDispatchToProps = ({startLoading, stopLoading})
+const mapStateToProps = ({loader})=>({isLoad:loader.isLoad})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
 
